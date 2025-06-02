@@ -1,0 +1,405 @@
+File handling
+==>File handling in C++ is a mechanism to create and perform read/write operations on a file.
+==>We can access various file handling methods in C++ by importing the <fstream> class.
+
+#include <fstream>
+<fstream> includes two classes for file handling:
+
+   ==> ifstream - to read from a file.
+    ==>ofstream - to create/open and write to a file.
+=================================================================================
+Opening and Closing a File
+
+In order to work with files, we first need to open them. In C++, we can open a file using the ofstream and ifstream classes.
+
+For example, here's how we can open a file using ofstream:
+std::ofstream my_file("example.txt"); 
+
+Here,
+    my_file - the name of the object of the ofstream class.
+    example.txt - the name and extension of the file we want to open.
+======================================================================================
+Note: We can also use the open() function to open a file. For example,
+
+std::ofstream my_file.open("example.txt");
+=====================================================================
+Closing a File
+Once we're done working with a file, we need to close it using the close() function.
+my_file.close();
+==================================================================================
+Example 1: Opening and Closing a File
+#include <iostream>
+#include <fstream>
+using namespace std; 
+int main() {
+
+    // opening a text file for writing
+    ifstream my_file("example1.txt");
+    // close the file
+    my_file.close();
+    return 0;
+}
+============================================================
+Check the File for Errors
+
+In file handling, it's important to ensure the file was opened without any error before we can perform any further operations on it.There are two common ways to check files for errors:
+
+1. By Checking the File Object
+
+ofstream my_file("example.txt");
+// check if the file has been opened properly
+if (!my_file) {
+
+    // print error message
+    cout << "Error opening the file." << endl;
+    // terminate the main() function
+    return 1;
+}
+
+==>
+if (!my_file) {...}
+This method checks If the file has been opened successfully, the condition evaluates to true.
+    If there's an error, it evaluates to false, and you can handle the error accordingly.
+
+program:
+#include <iostream>
+#include <fstream>
+using namespace std; 
+int main() {
+
+    // opening a text file for writing
+    ifstream my_file("example.txt");
+    if (!my_file) {
+
+    // print error message
+    cout << "Error opening the file." << endl;
+    // terminate the main() function
+    
+}
+
+    // close the file
+    my_file.close();
+    return 0;
+}
+
+================================================================================
+2. Using the is_open() Function
+
+ is_open() function returns
+    true - if the file was opened successfully.
+    false - if the file failed to open or if it is in a state of error.
+
+ofstream my_file("example.txt");
+if (!my_file.is_open()) {
+    cout << "Error opening the file." << endl;
+    return 1;
+}
+
+program
+#include <iostream>
+#include <fstream>
+using namespace std; 
+int main() {
+
+    // opening a text file for writing
+    ifstream my_file("example.txt");
+    if (!my_file.is_open()) {
+    cout << "Error opening the file." << endl;
+	}
+    // close the file
+    my_file.close();
+    return 0;
+}
+
+================================
+Reading from text files is done by opening the file using the ifstream class.
+ For example,
+ifstream my_file("example1.txt");
+
+Then, we need to read the file line-by-line. To do this, we need to loop through each line of the file until all the lines are read, i.e., until we reach the end of the file.
+
+We use the eof() function for this purpose, which returns
+    true - if the file pointer points to the end of the file
+    false - if the file pointer doesn't point to the end of the file
+
+For example,
+
+// variable to store file content
+string line;
+// loop until the end of the file
+while (!my_file.eof()) {
+
+    // store the current line of the file in the "line" variable
+    getline(my_file, line);
+
+    // print the line variable
+    cout << line << endl;
+}
+
+Here, the while loop will run until the end of the file. In each iteration of the loop,
+    getline(my_file, line); reads the current line of the file and stores it in the line variable.
+    Then, it prints the line variable.
+================================================================================
+Example : Read From a File
+
+#include <iostream>
+#include <fstream>
+using namespace std; 
+int main() {
+
+    // open a text file for reading
+    ifstream my_file("tt.txt");
+
+    // check the file for errors
+    if(!my_file) {
+        cout << "Error: Unable to open the file." << endl;
+    }
+    else
+    cout<<"file opened";
+
+    // store the contents of the file in "line" string
+    string line;
+
+    // loop until the end of the text file
+    while (!my_file.eof()) {
+
+        // store the current line of the file
+        // in the "line" variable
+        getline(my_file, line);
+
+        // print the line variable
+        cout << line << endl;
+    }
+    // close the file
+    my_file.close();
+
+    return 0;
+}
+
+
+=========================================
+Write to a File
+
+We use the ofstream class to write to a file. For example,
+ofstream my_file("example.txt");
+We can then write to the file by using the insertion operator << with the ofstream object my_file. For example,
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main() {
+
+    // open a text file for writing
+    ofstream my_file("tt.txt");
+    // check the file for errors
+    if(!my_file) {
+        cout << "Error: Unable to open the file." << endl;
+    }
+
+    // write multiple lines to the file
+    my_file << "Line 1" << endl;
+    my_file << "Line 2" << endl;
+    my_file << "Line 3" << endl;
+    // close the file
+    my_file.close();
+
+    return 0;
+}
+
+====================================================================================
+Note: Writing to an existing file will overwrite the existing contents of the file.
+=============================================================================
+Append to a Text File
+
+To add/append to the existing content of a file, you need to open the file in append mode.
+In C++, you can achieve this by using the ios::app flag when opening the file:
+
+ofstream my_file("example.txt", ios::app);
+
+
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main() {
+
+    // open a text file for appending
+    fstream my_file("example.txt", ios::app);
+    // if the file doesn't open successfully, print an error message
+    if(!my_file) {
+        cout << "Failed to open the file for appending." << endl;
+        return 1;  
+    }
+    // append multiple lines to the file
+    my_file << "Line 4" << endl;
+    my_file << "Line 5" << endl;
+
+    my_file << "Line 6" << endl;
+
+    // close the file
+    my_file.close();
+
+    return 0;
+}
+
+This will add the following lines to example.txt:
+
+Line 4
+Line 5
+Line 6
+======================================
+File Handling With fstream
+
+Instead of using ifstream to read from a file and ofstream to write to the file, we can simply use the fstream class for all file operations.
+The constructor for fstream allows you to specify the file name and the mode for file operations.
+
+Mode and 	Description 
+
+ios::in
+	Opens the file to read (default for ifstream).
+
+ios::out
+	Opens the file to write (default for ofstream).
+
+ios::app
+	Opens the file and appends new content to itat the end.
+=======================================
+#include <iostream>
+#include <fstream>
+using namespace std;
+int main() {
+
+    // 1. write to a text file
+    fstream my_file("example.txt", ios::out);
+    if (my_file) {
+        my_file << "This is a test line." << endl;
+        my_file.close();
+    }
+    else {
+        cout << "Unable to open file for writing." << endl;
+        return 1;
+    }
+
+    // 2. read from the same file
+    string line;
+    my_file.open("example.txt", ios::in);
+
+    
+    if (my_file) {
+        while (!my_file.eof()) {
+            getline(my_file, line);
+            cout << "Read from file: " << line << endl;
+        }
+        my_file.close();
+    }
+    else {
+        cout << "Unable to open file for reading." << endl;
+        return 1;
+    }
+
+    // 3. append data to the end of the file
+    my_file.open("example.txt", ios::app);
+
+
+    if (my_file) {
+        my_file << "This is another test line, appended to the file." << endl;
+        my_file.close();
+    }
+    else {
+        cout << "Unable to open file for appending." << endl;
+        return 1;
+    }
+
+    return 0;
+}
+======================================
+ https://www.programiz.com/cpp-programming/string-class/
+======================================
+1)setw-->in c when we used \t we get spaces. but my req is to perform formated output.
+here setw means set width,here it will allocate specify number of spaces on the screen and it is going to print text from right to left.
+printf() ,cout --->print output from left to right
+setw print output from right to left
+
+cout<<"1\n10\n100\n";
+output is 1
+		1 0
+		1 0 0
+result     3  0 0
+
+our requirement is  
+		1 
+	1	0
+1	0	0
+result 111
+
+print matter from right to left go for setw.
+
+cout<< setw(5)<<1<<endl;//5 means no of spaces
+leave 5 space
+    1
+cout<<setw(5)<<10<<endl;
+   10
+cout<<setw(5)<<100
+  100
+//easy to calculate bill
+====================================
+setfill()-->fill space with some symbol;
+cout<<setfill('*');
+cout<<setw(5)<<1<<endl
+//****1
+
+setfill works with setw.  when setw is der then only setfill is implemented.
+
+===================================================
+cout<<setfill('*');
+cout<<setw(5)<<1<<endl
+cout<<setfill('*');
+cout<<setw(5)<<10<<endl
+cout<<setfill(' ');//when we dont want * symbol.setfill continue untill we write setfill(' ')
+cout<<setw(5)<<100<<endl
+
+output ****1
+	      ***10
+		  100
+================
+setprecision()
+
+cout<<22/7.0;
+//3.142758
+here  we give priority 1 or 2 decimal no,truncate the remaining decimal points
+for this setprecision () is used to indicate no of decimal places in floating values.
+
+cout<<setprecision(2)<<22/7.0;//no of decimal
+//3.1
+setprecisiom() will not work for integer data
+
+cout<<setprecision(2)<<124;//not work for integer will print as it is.
+
+==================================================
+set ios flags:
+
+#include <iomanip>
+#include <ios>
+#include <iostream>
+ 
+using namespace std;
+ 
+int main()
+{
+ 
+   cout<<setiosflags(ios::showpoint)<<22/7; //3.142857; ------->to get decimal number
+cout<<setiosflags(ios::showpos)<<100;//+100
+cout<<setiosflags(ios::showpos)<<-100;//-100
+/*when u want to display + sign before any positive number
+use showpos flag.work only for positive no*/
+
+
+}
+
+
+
+
+
+
+
+
+

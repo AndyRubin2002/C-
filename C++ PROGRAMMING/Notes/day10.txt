@@ -1,0 +1,1564 @@
+=============================================================
+Generic Programming 
+
+  ==>Generic Programming is implemented to increase the efficiency of the code. Generic Programming enables the programmer to write a general algorithm which will work with all data types. It eliminates the need to create different algorithms if the data type is an integer, string or a character. 
+The advantages of Generic Programming are
+Code Reusability
+Avoid Function Overloading
+Once written it can be used for multiple times with different parameters list
+
+Generics can be implemented in C++ using Templates.
+
+Templates
+==>A template is a simple yet very powerful tool in C++. The simple idea is to pass the data type as a parameter so that we don’t need to write the same code for different data types. For example, a software company may need to sort() for different data types. Rather than writing and maintaining multiple codes, we can write one sort() and pass the datatype as a parameter. 
+
+==>  It allows you to define the generic classes and generic functions and thus provides support for generic programming. Generic programming is a technique where generic types are used as parameters in algorithms so that they can work for a variety of data types.
+
+==>How Do Templates Work?
+Templates are expanded at compiler time. This is like macros. The difference is, that the compiler does type-checking before template expansion. The idea is simple, source code contains only function/class, but compiled code may contain multiple copies of the same function/class. 
+
+=========================================================================
+Templates can be represented in two ways:
+
+Function template 
+==>We can define a template for a function. For example, if we have an add() function, we can create versions of the add function for adding the int, float or double type values.
+==>We write a generic function that can be used for different data types. Examples of function templates are sort(), max(), min(), printArray(). 
+==>Function Template is used to write generic functions that can be used with different datatypes.The method of Generic Programming is implemented to increase the efficiency of the code.
+==>The types of parameters passed to it during its call decide the actual data types which the function will operate upon. Generic functions are like 'write once use multiple times'.
+==>This generality of coding reduces the programmers efforts of writing multiple  function definitions having the same implementation or algorithm for different datatypes that might be passed to it. This saves time,disk space,and efforts to rewrite the source code.
+
+A Generic function is created by using the keyword template. 
+Syntax of Function Template
+
+template < class T> 
+ret_type func_name(T argumentname)  
+{  
+    // body of function.  
+}  
+Where T is a placeholder name for a data type used by the function and this list is called as template parameter list and it cannot be empty. It is used within the function definition. It is only a placeholder that the compiler will automatically replace this placeholder with the actual data type.
+
+#include <iostream>  
+using namespace std;  
+template<class T> 
+T add(T &a,T &b)  
+{  
+    T result = a+b;  
+    return result;  
+      
+}  
+int main()  
+{  
+  int i =2;  
+  int j =3;  
+  float m = 2.3;  
+  float n = 1.2;  
+  cout<<"Addition of i and j is :"<<add(i,j);  
+  cout<<'\n';  
+  cout<<"Addition of m and n is :"<<add(m,n);  
+  return 0;  
+}
+  Addition of i and j is :5
+Addition of m and n is :3.5
+In the above example, we create the function template which can perform the addition operation on any type either it can be integer, float or double.
+===================================================================
+
+#include<iostream>
+using namespace std;
+template <class T>
+void swap1(T &x, T &y)
+{
+   T temp;
+   temp=x;
+   x=y;
+   y=temp;
+}
+ int main()
+{
+    
+    int a=10,b=20;
+char x='A',y='B';
+    swap1(a,b);
+	cout<<a<<b<<endl;
+swap1(x,y);
+cout<<x<<y;
+ 
+}
+==============================================================
+Function Templates with Multiple Parameters/placeholder
+We can use more than one generic type in the template function by using the comma to separate the list.
+
+Syntax
+ template<class T1, class T2,.....>  
+return_type function_name (arguments of type T1, T2....)  
+{  
+    // body of function.  
+}  
+In the above syntax, we have seen that the template function can accept any number of arguments of a different type.
+
+
+#include <iostream>  
+using namespace std;  
+template<class X,class Y> 
+void fun(X a,Y b)  
+{  
+    std::cout << "Value of a is : " <<a<< std::endl;  
+    std::cout << "Value of b is : " <<b<< std::endl;  
+}  
+  
+int main()  
+{  
+   fun(15,12.3);  
+   
+   return 0;  
+}  
+Output:
+
+Value of a is : 15
+Value of b is : 12.3
+In the above example, we use two generic types in the template function, i.e., X and Y.
+============================================================================
+#include <iostream> 
+using namespace std; 
+template <class T ,class Y> 
+T myMax(T x, Y y)
+{
+    return (x > y) ? x : y;
+}
+ 
+int main()
+{
+    
+    cout << myMax(3, 'a') << endl;
+   
+    cout << myMax<double>(3,4 ) << endl;
+   
+    cout << myMax('g', 'e') << endl;
+ 
+    return 0;
+}
+========================================================================
+Overloading a Function Template
+We can overload the generic function means that the overloaded template functions can differ in the parameter list.
+
+
+#include <iostream>  
+using namespace std;  
+template<class X> 
+void fun(X a)  
+{  
+    std::cout << "Value of a is : " <<a<< std::endl;  
+}  
+template<class X,class Y> 
+void fun(X b ,Y c)  
+{  
+    std::cout << "Value of b is : " <<b<< std::endl;  
+    std::cout << "Value of c is : " <<c<< std::endl;  
+}  
+int main()  
+{  
+   fun(10);  
+   fun(20,30.5);  
+   return 0;  
+}  
+Output:
+
+Value of a is : 10
+Value of b is : 20
+Value of c is : 30.5
+In the above example, template of fun() function is overloaded.
+=========================================================================
+A program to display the name and the eno of the employee by using multitpLe parameter in the function template.
+
+#include <iostream>  
+using namespace std;  
+template<class t1,class t2>
+void display(t1 * x, t2 y)
+{  
+
+cout<<"name is "<<x;
+cout<<"eno or salary is "<<y;
+}
+int main()
+{
+	int a;
+	display(&a,1);
+	display("suresh",2);
+}
+===========================================================
+=========================================================================
+CLASS TEMPLATE
+
+Class Template can also be defined similarly to the Function Template. When a class uses the concept of Template, then the class is known as generic class.
+
+Syntax
+template<class Ttype>  
+class class_name  
+{  
+  .  
+  .  
+}  
+Ttype is a placeholder name which will be determined when the class is instantiated. We can define more than one generic data type using a comma-separated list. The Ttype can be used inside the class body.
+
+Now, we create an instance of a class
+class_name<type> ob;  
+where class_name: It is the name of the class.
+type: It is the type of the data that the class is operating on.
+ob: It is the name of the object.
+
+======================================================
+
+
+#include <iostream>  
+using namespace std;  
+template<class T>  
+class A   
+{  
+    public:  
+    T num1 ;  
+    T num2 ;  
+	A(T x) 
+    {
+		num1=x;
+		num2=x;
+	}          
+    void add()  
+    {  
+        std::cout << "Addition of num1 and num2 : " << num1+num2<<std::endl;  
+    }  
+      
+};  
+  
+int main()  
+{  
+    A<int> d(2);  
+    d.add();  
+    return 0;  
+} 
+In the above example, we create a template for class A. Inside the main() method, we create the instance of class A named as, 'd'.
+=====================================================================================
+#include <iostream>  
+     using namespace std;  
+     template<class T>
+    class A   
+    {  
+	public:
+         T a, b;  
+         public:  
+        void display(T a,T b)
+         {  
+                 std::cout << "Values of a and b are : " << a<<" ,"<<b<<std::endl;  
+        }  
+	}; 
+      int main()  
+     {  
+           A<int> d;  
+           d.display(5,6);  
+		A<char> d1;  
+           d1.display('a','b');
+           return 0;  
+     } 
+
+=============================================================
+
+CLASS TEMPLATE WITH MULTIPLE PARAMETERS
+We can use more than one generic data type in a class template, and each generic data type is separated by the comma.
+
+Syntax
+template<class T1, class T2, ......>   
+class class_name  
+{  
+   // Body of the class.  
+}  
+
+#include <iostream>  
+     using namespace std;  
+     template<class T1, class T2>  
+    class A   
+    {  
+         T1 a;  
+         T2 b;  
+         public:  
+        A(T1 x,T2 y)  
+       {  
+           a = x;  
+           b = y;  
+        }  
+           void display()  
+          {  
+                 std::cout << "Values of a and b are : " << a+b<<std::endl;  
+           }  
+      };  
+  
+      int main()  
+     {  
+           A<int,float> d(5,6.5);  
+           d.display();  
+           return 0;  
+     }  
+Output:
+
+Values of a and b are : 11.5
+=========================================================================
+#include <iostream>  
+using namespace std;
+template<class T, class U >   
+  class A 
+{ 
+public: 
+    T x; 
+    U y;
+	void add(T x,U y)
+	{
+		cout<<x+y<<endl;
+	 } 
+}; 
+  
+int main() 
+{ 
+    A<int,int> a;
+	a.add(1,7); 
+    A<int, int> b; 
+   b.add(4,9); 
+    return 0; 
+} 
+
+========================================================================
+The template can contain multiple arguments, and we can also use the non-type arguments In addition to the type T argument.
+Let' s see the following example:
+
+template<class T, int size>  
+class array  
+{  
+        T arr[size];           // automatic array initialization.  
+};  
+
+Arguments are specified when the objects of a class are created:
+
+array<int, 15> t1;                        // array of 15 integers.  
+array<float, 10> t2;                    // array of 10 floats.   
+array<char, 4> t3;                      // array of 4 chars.           
+     
+Let's see a simple example of nontype template arguments.
+
+#include <iostream>  
+using namespace std;  
+template<class T, int size>  
+class A   
+{  
+    public:  
+    T arr[size];  
+    void insert()  
+    {  
+        int i =1;  
+        for (int j=0;j<size;j++)  
+        {  
+            arr[j] = i;  
+            i++;  
+        }  
+    }  
+      
+    void display()  
+    {  
+        for(int i=0;i<size;i++)  
+        {  
+            std::cout << arr[i] << " ";  
+        }  
+    }  
+};  
+int main()  
+{  
+    A<int,10> t1;  
+    t1.insert();  
+    t1.display();  
+    return 0;  
+}  
+Output:
+
+1 2 3 4 5 6 7 8 9 10
+In the above example, the class template is created which contains the nontype template argument, i.e., size. It is specified when the object of class 'A' is created.
+
+=========================================
+======================================================
+The task is to implement some important functions of stack like pop(), push(), display(), topElement(), isEmpty(), isFull() using class template in C++. Stack is a linear data structure that follows a particular order in which the operations are performed. The order may be LIFO(Last In First Out) or FILO(First In Last Out).
+
+Consider an example of plates stacked over one another in the canteen. The plate which is at the top is the first one to be removed, i.e. the plate which has been placed at the bottommost position remains in the stack for the longest period of time. So, it can be simply seen to follow LIFO(Last In First Out)/FILO(First In Last Out) order.
+
+   
+// C++ Program to Implement stack using Class Templates
+ 
+ 
+#define SIZE 5
+ 
+template <class T> 
+class Stack {
+
+public:
+     Stack();
+    void push(T k);
+ 
+       T pop();
+ 
+    // To print top element in stack using peek() method
+    T topElement();
+ 
+       // To check whether stack is full using isFull() method
+    bool isFull();
+ 
+    // To check whether stack is empty using isEmpty() method
+    bool isEmpty();
+ 
+private:
+    // Taking data member top
+    int top;
+     // Initialising stack(array) of given size
+    T st[SIZE];
+};
+ 
+template <class T> 
+Stack<T>::Stack()
+ { top = -1; }
+ 
+template <class T> 
+void Stack<T>::push(T k)
+{
+ 
+    // Checking whether stack is completely filled
+    if (isFull()) {
+        // Display message when no elements can be pushed
+        // into it
+        cout << "Stack is full\n";
+    }
+ 
+    // Inserted element
+    cout << "Inserted element " << k << endl;
+ 
+  
+    top = top + 1;
+ 
+    // Now, adding element to stack
+    st[top] = k;
+}
+ 
+
+// To check if the stack is empty
+template <class T>
+ bool Stack<T>::isEmpty()
+{
+    if (top == -1)
+        return 1;
+    else
+        return 0;
+}
+ 
+// To check if the stack is full or not
+template <class T>
+ bool Stack<T>::isFull()
+{
+    // Till top in inside the stack
+    if (top == (SIZE - 1))
+        return 1;
+    else
+ 
+        // As top can not exceeds th size
+        return 0;
+}
+ 
+
+template <class T> T Stack<T>::pop()
+{
+    // Initialising a variable to store popped element
+    T popped_element = st[top];
+ 
+    // Decreasing the top as
+    // element is getting out from the stack
+    top--;
+ 
+    // Returning the element/s that is/are popped
+    return popped_element;
+}
+ 
+template <class T> 
+T Stack<T>::topElement()
+{
+    // Initialising a variable to store top element
+    T top_element = st[top];
+ 
+    // Returning the top element
+    return top_element;
+}
+ 
+int main()
+{
+ 
+    Stack<int> integer_stack;
+    Stack<string> string_stack;
+    integer_stack.push(2);
+    integer_stack.push(54);
+    integer_stack.push(255);
+ 
+     string_stack.push("Welcome");
+    string_stack.push("to");
+    string_stack.push("cpp");
+ 
+       cout << integer_stack.pop() << " is removed from stack"
+         << endl;
+ 
+    
+    cout << string_stack.pop() << " is removed from stack "
+         << endl;
+ 
+       cout << "Top element is " << integer_stack.topElement()
+         << endl;
+ 
+    // Print and display the top element in string stack
+    cout << "Top element is " << string_stack.topElement()
+         << endl;
+ 
+    return 0;
+}
+
+======================================================
+Friend Class and Function in C++
+
+==>Data hiding is a fundamental concept of object-oriented programming. It restricts the access of private members from outside of the class.Similarly, protected members can only be accessed by derived classes and are inaccessible from outside.
+However, there is a feature in C++ called friend functions that break this rule and allow us to access private/protected member functions from outside the class.
+
+==>A friend class can access private and protected members of other classes in which it is declared as a friend. 
+It is sometimes useful to allow a particular class to access private and protected members of other classes. 
+
+We can declare a friend class in C++ by using the friend keyword.
+
+class Demo //Base class
+{
+	//Demo1 is a friend  of Demo class
+	friend class Demo1;
+}
+class Demo1 // friend class
+{
+//statements;
+}
+
+Syntax:
+friend class class_name;    // declared in the base class
+
+========================================================
+
+
+// C++ Program to demonstrate the functioning of a friend class
+#include <iostream>
+using namespace std;
+ class Demo {
+private:
+    int private_variable;
+ protected:
+    int protected_variable;
+ public:
+    Demo()
+    {
+        private_variable = 10;
+        protected_variable = 99;
+    }
+     // friend class declaration
+    friend class F;
+};
+ // Here, class F is declared as a friend inside class Demo. Therefore,
+// F is a friend of class Demo. Class F can access the private/PROTECTED members of class Demo.
+class F {
+public:
+    void display(Demo& t)
+    {
+        cout << "The value of Private Variable = "<< t.private_variable << endl;
+        cout << "The value of Protected Variable = "<< t.protected_variable;
+    }
+};
+int main()
+{
+    Demo g;
+    F fri;
+    fri.display(g);
+    return 0;
+}
+
+Output
+The value of Private Variable = 10
+The value of Protected Variable = 99
+
+Note: We can declare friend class or function anywhere in the base class body whether its private, protected or public block. It works all the same.
+=====================================================================================
+
+Friend Function
+
+==>Like a friend class, a friend function can be granted special access to private and protected members of a class in C++. They are the non-member functions that can access and manipulate the private and protected members of the class in which they are declared as friends.
+==>If a function is defined as a friend function in C++, then the protected and private data of a class can be accessed using the function.
+
+==>A friend function can be:
+friend return_type function_name (arguments);    // for a global function
+
+===================================================================
+
+#include <iostream>  
+using namespace std;  
+class A
+{
+	int a;
+	public:
+		int geta();
+		friend void xyz(A&);
+};
+int A::geta()
+{
+	cout<<"enter the value of a\n";
+	cin>>this->a;
+}
+void xyz(A& a1obj)
+{
+	cout<<"friend function is accessing private class data  "<<a1obj.a<<endl;
+	
+}
+int main()
+{
+	A aobj;
+	aobj.geta();//a=10
+	xyz(aobj);
+}
+
+=======================================================================
+
+#include <iostream>  
+using namespace std;  
+class B;//forward declaraction
+class A
+{
+	int a;
+	public:
+		void geta()
+		{
+			cout<<"enter value of a\n";
+			cin>>a;
+		}
+		friend void big(A&, B&);
+};
+ class B
+{
+	int b;
+	public:
+		void getb()
+		{
+			cout<<"enter value of b\n";
+			cin>>b;
+		}
+		friend void big(A&, B&);
+};
+
+void big(A& x,B& y)
+{
+	if(x.a>y.b)
+	cout<<x.a<<"is greater";
+	if(x.a<y.b)
+	cout<<y.b<<"is greater";
+	else
+	cout<<"both are equal";
+}
+int main()
+{
+	A aobj;
+	B bobj;
+	aobj.geta();
+	bobj.getb();
+	big(aobj,bobj);	
+}
+
+
+
+=================================================================
+
+We can declare any global function as a friend function. 
+   
+// C++ program to create a global function as a friend function of some class
+#include <i  ostream>
+using namespace std;
+ 
+class base {
+private:
+    int private_variable;
+ 
+protected:
+    int protected_variable;
+ 
+public:
+    base()
+    {
+        private_variable = 10;
+        protected_variable = 99;
+    }
+     
+      // friend function declaration
+    friend void friendFunction(baseclass&);
+};
+ 
+ 
+// friend function definition
+void friendFunction(base& obj)
+{
+    cout << "Private Variable: " << obj.private_variable
+         << endl;
+    cout << "Protected Variable: " << obj.protected_variable;
+}
+ 
+int main()
+{
+    base object1;
+    friendFunction(object1);
+ 
+    return 0;
+}
+
+Output
+Private Variable: 10
+Protected Variable: 99
+In the above example, we have used a global function as a friend function.==============================================================================================
+
+Features of Friend Functions
+ ==>A friend function is a special function in C++ that in spite of not being a member function of a class has the privilege to access the private and protected data of a class.
+==>A friend function is a non-member function or ordinary function of a class, which is declared as a friend using the keyword “friend” inside the class. By declaring a function as a friend, all the access permissions are given to the function.
+==>The keyword “friend” is placed only in the function declaration of the friend function and not in the function definition or call.
+==>A friend function is called like an ordinary function. It cannot be called using the object name and dot operator. However, it may accept the object as an argument whose value it wants to access.
+==>A friend function can be declared in any section of the class i.e. public or private or protected.
+=======================================================
+Advantages of Friend Functions
+==>A friend function is able to access members without the need of inheriting the class.
+==>The friend function acts as a bridge between two classes by accessing their private data.
+==>It can be declared either in the public or private or protected part of the class.
+
+Disadvantages of Friend Functions
+==>Friend functions have access to private members of a class from outside the class which violates the law of data hiding.
+==>Friend functions cannot do any run-time polymorphism 
+
+Important Points About Friend Functions and Classes
+==>Friendship is not mutual. If class A is a friend of B, then B doesn’t become a friend of A automatically.
+i.e Friendship is not inherited. 
+
+
+
+======================================================================================
+Example :
+#include <iostream>    
+using namespace std;    
+class Box    
+{    
+    private:    
+        int length;    
+    public:    
+        Box()
+	{
+		length=5;
+	}
+        friend int printLength(Box); //friend function    
+};    
+int printLength(Box b)    
+{    
+   b.length += 10;    
+    return b.length;    
+}    
+int main()    
+{    
+    Box b;    
+    cout<<"Length of box: "<< printLength(b)<<endl;    
+    return 0;    
+}    
+Output:
+
+Length of box: 10  
+=============================================================
+#include<iostream>
+using namespace std;
+class complex
+{
+	int real,img;
+public:
+	complex();
+	complex(int,int);
+	void display();
+	complex operator+(int);
+	friend complex operator+(int,complex&);
+};
+complex::complex()
+{}
+complex::complex(int real,int img)
+{
+	this->real=real;
+	this->img=img;
+}
+void complex::display()
+{
+	if(img>0)
+	cout<<"complex number is "<<real<<"+"<<img<<"i"<<endl;
+	else
+	cout<<"complex number is "<<real<<img<<"i"<<endl;
+}
+complex complex::operator+(int num)
+{
+	complex temp;
+	temp.real=real+num;
+	temp.img=img+num;
+	return temp;
+}
+complex operator+(int num,complex & c)
+{
+	complex temp;
+	temp.real=c.real+num;
+	temp.img=c.img+num;
+	return temp;
+}
+
+
+
+int main()
+{
+	/*complex c1(1,2);
+	complex c2=c1 + 5;//c2=c1.operator+(5)
+	c2.display();*/
+	complex c1(1,2);
+	complex c2=5+c1;//  operator+(5,c1)     
+	c2.display();
+	
+
+
+}
+=========================================================================
+//overloading of == operator
+// C++ Program to overload == operator 
+#include<iostream> 
+#include<string> 
+using namespace std; 
+  
+class Car{ 
+  private: 
+    string name; 
+    int cost; 
+    public: 
+        Car(string n, int c){ 
+            name=n; 
+            cost=c; 
+        } 
+        bool operator == ( Car &c){ 
+            if (name == c.name && cost == c.cost) 
+                return true; 
+            return false; 
+        } 
+}; 
+int main(){ 
+    Car car1 ("Santro",500000); 
+    Car car2 ("Safari",1000000); 
+    if (car1 == car2) 
+        cout<<"Equivalent"<<endl; 
+    else
+        cout<<"Not Equivalent"<<endl; 
+}
+====================================================================
+//overloading of insertion and extraction operator
+using friend function with 2 classes
+#include <iostream>
+using namespace std;
+ 
+class Complex
+{
+private:
+    int real, imag;
+public:
+    Complex(int r = 0, int i =0)
+    {  real = r;   imag = i; }
+    friend void operator << (ostream &out, const Complex &c);
+    friend void operator >> (istream &in,  Complex &c);
+};
+ 
+void operator << (ostream &out, const Complex &c)
+{
+    out << c.real;
+    out  <<"+"<< c.imag <<"i"<< endl;
+   
+}
+ 
+void operator >> (istream &in,  Complex &c)
+{
+    cout << "Enter Real Part ";
+    in >> c.real;
+    
+    cout << "Enter Imaginary Part ";
+    in >> c.imag;
+    
+}
+ 
+int main()
+{
+   Complex c1;
+   cin >> c1;//operator>>(cin,c1);
+   cout << "The complex object is ";
+   cout << c1;
+   return 0;
+}
+==============================================================================
+
+What Is C++ Enum?
+
+==>Enum, which is also known as enumeration, is a user-defined data type that enables you to create a new data type that has a fixed range of possible values, and the variable can select one value from the set of values. For example, suppose you are the owner of an ice cream shop, and you sell a limited range of ice cream flavors. So you want the customers to select only from that collection of ice creams in your shop. This becomes an enumeration with ice cream as the name of enumeration and different flavors of ice creams as its elements.
+
+==>Enumeration (Enumerated type) is a user-defined data type that can be assigned some limited values. These values are defined by the programmer at the time of declaring the enumerated type.
+
+Syntax:
+
+enum enumerated-type-name
+{
+    value1, value2, value3…..valueN
+};
+
+enum Iceccream
+{
+	vanilla,stawberry,mango
+};
+Each of these elements has values starting from 0, like vanilla is 0, stawberry is 1, etc. The default values mentioned can be altered during the declaration of the enum in C++.
+====================================================================
+To declare an enum variable, write the name of the enumeration along with the enum variable.
+enum Iceccream
+{
+	vanilla,stawberry,mango
+};
+int main()
+{
+	Icecream i;
+}
+Here i is the enum variable.
+
+
+Example:
+enum first_enum{value1=1, value2=10, value3};
+
+In this case, 
+first_enum e;
+e=value3;
+cout<<e;
+
+Output:
+11
+
+
+
+============================================================================
+Why use an enum in a program?
+One can utilise the enums in a program when they want the variables in the program to have just the set of values. For instance, let us consider the creation of a direction variable. Now, there are a total of four directions (N, S, W, E). Thus, a total of four values are possible with the direction variable. But here, the variable would be able to hold just a single value at any given time. Now, if a user provides any different value to the variable here, then we should get a compilation error.
+For vsuch scenario enum can be used.
+
+==>enum is a userdefined datatype that consists of paired named-integer constants. 
+
+================================================================
+#include<iostream>
+using namespace std;
+
+int main() 
+{ 
+string today="sunday";
+  
+    switch (today) { 
+    case "sunday": 
+        cout << "it is sunday"; 
+        break; 
+    case 1: 
+        cout << "it is monday"; 
+        break; 
+}
+}
+
+//error
+==============================================
+#include<iostream>
+using namespace std;
+enum Day{sunday='A',monday,tuesday,wednesday,thursday,friday,saturday
+};
+int main() 
+{ 
+    enum Day today;
+    today=sunday;
+  	cout<<today;
+    switch (today) { 
+    case 65: 
+        cout << "it is sunday"; 
+        break; 
+    case 66: 
+        cout << "it is monday"; 
+        break; 
+}
+}
+
+====================================================================
+#include<iostream>
+using namespace std;
+enum Day{sunday=0,monday,tuesday,wednesday,thursday,friday,saturday
+};
+int main() 
+{ 
+    Day today=sunday;
+  
+    switch (today) { 
+    case sunday: 
+        cout << "it is sunday"; 
+        break; 
+    case monday: 
+        cout << "it is monday"; 
+        break; 
+}
+}
+
+==========================================
+  
+// Defining enum Year 
+enum year { 
+    Jan=1, 
+    Feb, 
+    Mar, 
+    Apr, 
+    May, 
+    Jun, 
+    Jul, 
+    Aug, 
+    Sep, 
+    Oct, 
+    Nov, 
+    Dec 
+}; 
+  int main() 
+{ 
+    int i; 
+  
+    // Traversing the year enum 
+    for (i = Jan; i <= Dec; i++) 
+        cout << i << " "; 
+  
+    return 0; 
+}
+
+Output: 
+1 2 3 4 5 6 7 8 9 10 11 12
+==============================================================
+Points to remember for C++ Enum
+enum can be easily used in switch
+enum can be traversed
+The C++ enum constants are  final implicitly.
+
+=======================================
+  Why enums are used in C++ programming?
+
+Enums are used to give names to constants, which makes the code easier to read and maintain.
+Use enums when you have values that you know aren't going to change, like month days, days, colors, deck of cards, etc.Enums or enumerations are generally used when you expect the variable to select one value from the possible set of values
+=====================================================================
+More points on Enum
+
+Multiple enum  elements can have the same value. Here’s an example of two enum elements having a similar value.
+enum Cars{Jeep = 1, BMW = 0, Mercedes_Benz = 0};
+
+==============================
+All the enum elements or constants should have a unique scope. It means that an element cannot be a part of two different enums in the same program as it will fail during compilation. 
+
+Example:
+#include <stdio.h>
+
+enum Cars{Mahindra, Jeep, BMW};
+
+enum Luxury_Cars{BMW, Ferrari, Mercedes_Benz};
+
+int main(){
+
+    return 0;
+
+}
+===========================================================
+==========================================================
+
+Typedef:
+
+typedef keyword in C++ is used for aliasing existing data types, user-defined data types, and pointers to a more meaningful name. Typedefs allow you to give descriptive names to standard data types, which can also help you self-document your code. Mostly typedefs are used for aliasing, only if the predefined name is too long or complex to write again and again.  The unnecessary use of typedef is generally not a good practice.
+
+Syntax:
+typedef <current_name> <new_name>
+
+======================================================
+Applications of typedef in C++
+
+    typedef in C++ can be used for aliasing predefined data types with long names.
+    It can be used with STL data structures like Vectors, Strings, Maps, etc.
+==========================================================
+#include <iostream> 
+using namespace std; 
+  
+int main() 
+{ 
+  
+    typedef int arr[3]; 
+  
+    // Making new 1D array 
+  
+    arr array1{ 1 , 1, 1}; 
+      
+  
+    cout << "Array output: "
+
+         << "\n"; 
+    for (int i = 0; i < 3; i++) { 
+        cout << array1[i] << " "; 
+    } 
+    cout << "\n"; 
+
+=================================================================
+#include <iostream> 
+using namespace std; 
+  
+int main() 
+{ 
+    int a = 10; 
+    int b = 20; 
+    // iPtr can now be used to create new pointers of type 
+    // int 
+    typedef int* iPtr; 
+  
+    iPtr pointer_to_a = &a; 
+    iPtr pointer_to_b = &b; 
+  
+    cout << "a is: " << *pointer_to_a << "\n"; 
+    cout << "b is: " << *pointer_to_b << "\n"; 
+  
+    return 0; 
+}
+================================================================
+
+
+
+
+
+
+
+
+
+Exception Handling
+
+What is an exception?
+
+==>An exception is an event that occurs during the execution of a program that disrupts the normal flow of instructions.
+==>In C++, exceptions are runtime anomalies or abnormal conditions that a program encounters during its execution due to which normal flow of the program cannot be maintained.
+
+ What is  Exception Handling?
+==>The process of handling these exceptions is called exception handling.
+==>Exception handling is a manner to handle the runtime error, we carry out exception handling, so, the normal flow of the program may be maintained even after runtime errors. 
+==>Using the exception handling mechanism, the control from one part of the program where the exception occurred can be transferred to another part of the code where the exception can be handled.
+
+====================================================================================
+Why do we need Exception Handling in C++?
+
+The following are the main advantages of exception handling over traditional error handling:
+
+ 1) Separation of Error Handling Code from Normal Code: There are always if-else conditions to handle errors in traditional error handling codes. These conditions and the code to handle errors get mixed up with the normal flow. This makes the code less readable and maintainable. With try/catch blocks, the code for error handling becomes separate from the normal flow.
+
+2)It maintains the normal flow of the application. Rest of the code is executed even after exception.
+This allows the program to recover gracefully from the error rather than terminating abruptly.
+
+3)The Exception Handling mechanism offers a way of clean seperation between error generating block and error handling block,thats why detecting of errors becomes very easy
+
+4)In C++, both basic types and objects can be thrown as exceptions.
+
+====================================================================================
+C++ try , catch and throw
+
+C++ provides an inbuilt feature for Exception Handling. It can be done using the following specialized keywords: try, catch, and throw with each having a different purpose.
+
+Syntax of try-catch in C++
+try {         
+     // Code that might throw an exception
+     throw SomeExceptionType("Error message");
+ } 
+catch( ExceptionName e1 )  {   
+     // catch block catches the exception that is thrown from try block
+ } 
+
+1. try in C++
+==>The try keyword represents a block of code that may throw an exception placed inside the try block. It’s followed by one or more catch blocks. If an exception occurs, try block throws that exception.
+==>The try block contains the code that may throw an exception. If an exception is thrown within the try block, the control is transferred to the corresponding catch block.
+
+2. catch
+The catch block contains the code that will handle the exception. Each catch block is associated with a specific exception type, and the catch block that corresponds to the type of exception that was thrown will be executed. If the catch block does not have a matching exception type, the exception is passed to the next catch block.
+
+3. throw in C++
+An exception in C++ can be thrown using the throw keyword. When a program encounters a throw statement, then it immediately terminates the current function and starts finding a matching catch block to handle the thrown exception.
+The throw keyword is used to throw an exception. The expression that follows the throw keyword is used to create the exception object. The exception object is then passed to the nearest catch block that can handle it.
+
+Note: Multiple catch statements can be used to catch different type of exceptions thrown by try block.
+==========================================================================================
+C++ Exception Classes
+
+In C++ standard exceptions are defined in <exception> class that we can use inside our programs. The arrangement of parent-child class hierarchy.They are intended to provide a standard set of exception classes for use in C++ programs and are designed to represent a wide range of error conditions that may occur during the execution of a program. 
+
+ll the exception classes in C++ are derived from std::exception class. Let's see the list of C++ common exception classes.
+Exception and Description
+std::exception
+	It is an exception and parent class of all standard C++ exceptions.
+std::runtime_error
+	It is an exception that cannot be detected by reading a code.
+std::bad_exception
+	It is used to handle the unexpected exceptions in a c++ program.
+std::bad_cast
+	This exception is generally be thrown by dynamic_cast.
+std::bad_typeid
+	This exception is generally be thrown by typeid.
+std::bad_alloc
+	 When the new operator fails to allocate the requested space.
+std::invalid_argument
+ This is thrown due to invalid arguments.
+===========================================
+In C++, exceptions are thrown using the “throw” keyword, followed by an expression that evaluates to the exception object.
+Here’s an example of throwing an exception when a function is called with an invalid argument:
+
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+int divide(int a, int b) {
+    if (b == 0) {
+        throw invalid_argument("division by zero");
+    }
+    return a / b;
+}
+
+int main() {
+    try {
+        int result = divide(1, 0);
+        std::cout << result << std::endl;
+    } catch (invalid_argument& e) {
+        std::cout << "An exception occurred: " << e.what() << std::endl;
+    }
+    return 0;
+}
+
+Output:
+
+An exception occurred: division by zero
+
+In this example, the divide function throws an exception of type std::invalid_argument if the second argument is zero. The exception is caught in the catch block in the main, and the message “An exception occurred: division by zero” is printed.The exception object is passed as a reference to the catch block and can be used to get more information about the exception. In this example, the what() member function is called on the exception object to print a message describing the error. 
+====================================
+
+program 2:
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+int divide(int a, int b) {
+    if (b == 0) {
+        throw invalid_argument("division by zero");
+    }
+    return a / b;
+}
+
+int main() {
+    try {
+        int result = divide(1, 0);
+        std::cout << result << std::endl;
+    } catch (exception& e) {
+        std::cout << "An exception occurred: " << e.what() << std::endl;
+    }
+    return 0;
+}
+==============================================
+You can throw different types of exceptions as well like built-in types and custom types.
+
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+
+int x = 5;
+
+int main() {
+try {
+   if (x == 0) 
+      throw x;
+   else if (x > 0)
+      throw 'x';
+   else 
+      throw "x is negative";
+}
+catch (int i) {
+   cout << "Caught an int exception: " << i << endl;
+}
+catch (char c) {
+   cout << "Caught a char exception: " << c << endl;
+}
+catch (char* str) {
+   cout << "Caught a string exception: " << str << endl;
+}
+}
+Output:
+Caught a char exception: x
+
+In this example, the code throws an exception based on the value of x: if x is zero, it throws an int exception, if x is positive it throws a char exception, otherwise it throws a string exception. The catch blocks catch the exception and print an appropriate message.
+===========================================
+program:C++ code for a simple program that prompts the user to enter their age and then checks if the age is a valid number between 0 and 100. If the age is not within this range, an exception is thrown, which is caught by the catch block, which prints an error message.
+
+
+#include <iostream>
+using namespace std;
+ 
+int main() {
+  try {
+    std::cout<<"Please enter the age"<<std::endl;
+    int age;
+    std::cin>>age;
+    if (age<0 || age>100)
+    {
+      throw (age);
+}
+ }
+ catch (int e) {
+cout << "Access denied - You must enter a valid age.\n";
+}
+  return 0;
+}
+===========================================
+Properties of Exception Handling in C++
+Property 1:
+There is a special catch block called the ‘catch-all’ block, written as catch(…), that can be used to catch all types of exceptions.
+
+In the following program, an int is thrown as an exception, but there is no catch block for int, so the catch(…) block will be executed. 
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    // try block
+    try {
+
+        // throw
+        throw 10;
+    }
+
+    // catch block
+    catch (char* excp) {
+        cout << "Caught " << excp;
+    }
+
+    // catch all
+    catch (...) {
+        cout << "Default Exception\n";
+    }
+    return 0;
+}
+===============================================================================
+Property 2
+    Implicit type conversion doesn’t happen for primitive types.
+
+Example
+In the following program, ‘a’ is not implicitly converted to int. 
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    try {
+        throw 'a';
+    }
+    catch (int x) {
+        cout << "Caught " << x;
+    }
+    catch (...) {
+        cout << "Default Exception\n";
+    }
+    return 0;
+}
+=========================================
+Rethrowing an Exception
+
+Rethrowing an exception in C++ involves catching an exception within a try block and instead of dealing with it locally throwing it again to be caught by an outer catch block. By doing this. we preserve the type and details of the exception ensuring that it can be handled at the appropriate level within our program.
+
+This approach becomes particularly valuable when managing exceptions at multiple levels or when additional actions need to be performed before resolving the exception.
+In C++, try/catch blocks can be nested. Also, an exception can be re-thrown using “throw; “. 
+
+
+
+#include <iostream> 
+#include <stdexcept> 
+using namespace std; 
+  
+// Function to perform division 
+int divide(int numerator, int denominator) 
+{ 
+    try { 
+        if (denominator == 0) { 
+            // Throw a runtime_error if attempting to divide 
+            // by zero 
+            throw runtime_error("Division by zero!"); 
+        } 
+        // Perform the division and return the result 
+        return numerator / denominator; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in divide(): " << e.what() 
+             << endl; 
+        // Rethrow the caught exception to handle it at a 
+        // higher level 
+        throw; 
+    } 
+} 
+  
+// Function to calculate the sum of two numbers 
+int calculateSum(int a, int b) 
+{ 
+    try { 
+        if (a < 0 || b < 0) { 
+            // Throw an invalid_argument exception for 
+            // negative numbers 
+            throw invalid_argument( 
+                "Negative numbers not allowed!"); 
+        } 
+        // Calculate and return the sum 
+        return a + b; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in calculateSum(): "
+             << e.what() << endl; 
+        // Rethrow the caught exception to handle it at a 
+        // higher level 
+        throw; 
+    } 
+} 
+  
+int main() 
+{ 
+    try { 
+        // Calculate the sum of 10 and the result of 
+        // dividing 20 by 2 
+        //int result = calculateSum(10, divide(20, 2)); 
+        //cout << "Result: " << result << endl; 
+  
+        // Attempt to divide by zero, triggering an 
+        // exception 
+        int invalidResult = calculateSum(5, divide(10, 0)); 
+        cout << "Invalid Result: " << invalidResult << endl; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in main: " << e.what() 
+             << endl; 
+        // Handle the exception at the highest level 
+    } 
+  
+    return 0; 
+}
+Explanation:
+
+    The program first calculates the sum of 10 and the result of dividing 20 by 2, which is 20. This result is printed and there are no exceptions raised in this part.
+    Next, the program attempts to divide by zero when calculating the sum of 5 and the result of dividing 10 by 0. This triggers a “Division by zero!” exception which is caught within the divide() function and rethrown. The rethrown exception is then caught in the main() function and is printed as “Division by zero!” along with the appropriate exception handling messages.
+
+=============================================
+
+
+// C++ program to demonstrate try/catch blocks can be nested
+// in C++
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+    // nesting of try/catch
+    try {
+        try {
+            throw 20;
+        }
+        catch (int n) {
+            cout << "Handle Partially ";
+            throw; // Re-throwing an exception
+        }
+    }
+    catch (int n) {
+        cout << "Handle remaining ";
+    }
+    return 0;
+}
+=========================================
+The exception::what() used to get string identifying exception. This function returns a null terminated character sequence that may be used to identify the exception. 
+Below is the syntax for the same:
+
+Header File:
+#include<exception>
+
+Syntax:
+
+const char* what() const throw();
+
+Return: The function std::what() return a null terminated character sequence that is used to identify the exception.
+
+Note: To make use of std::what(), one should set up the appropriate try and catch blocks.
+
+
+  #include <iostream>  
+    #include <exception>  
+    using namespace std;  
+    class Demo: public exception { 
+    public:
+     char* what() const throw() 
+    { 
+        return "hello world";
+    } 
+}; 
+  
+// main method 
+int main() 
+{ 
+  
+    // try block 
+    try { 
+        throw Demo(); 
+    } 
+  
+    // catch block to handle the errors 
+    catch (exception& gfg1) { 
+        cout << gfg1.what(); 
+    } 
+  
+    return 0; 
+} 
+===============================================
+
+C++ User-Defined Exceptions
+
+
+
+
+The new exception can be defined by overriding and inheriting exception class functionality.
+    #include <iostream>  
+    #include <exception>  
+    using namespace std;  
+    class MyException : public exception{  
+        public:  
+            const char * what() const throw()  
+            {  
+                return "Attempted to divide by zero!\n";  
+            }  
+    };  
+    int main()  
+    {  
+        try  
+        {  
+            int x, y;  
+            cout << "Enter the two numbers : \n";  
+            cin >> x >> y;  
+            if (y == 0)  
+            {  
+                MyException z;  
+                throw z;  
+            }  
+            else  
+            {  
+                cout << "x / y = " << x/y << endl;  
+            }  
+        }  
+        catch(exception& e)  
+        {  
+            cout << e.what();  
+        }  
+    }
+=====================================================
+

@@ -1,0 +1,818 @@
+
+================================================================================
+Exception Handling
+
+What is an exception?
+
+==>An exception is an event that occurs during the execution of a program that disrupts the normal flow of instructions.
+==>In C++, exceptions are runtime anomalies or abnormal conditions that a program encounters during its execution due to which normal flow of the program cannot be maintained.
+
+ What is  Exception Handling?
+==>The process of handling these exceptions is called exception handling.
+==>Exception handling is a manner to handle the runtime error, we carry out exception handling, so, the normal flow of the program may be maintained even after runtime errors. 
+==>Using the exception handling mechanism, the control from one part of the program where the exception occurred can be transferred to another part of the code where the exception can be handled.
+
+====================================================================================
+Why do we need Exception Handling in C++?
+
+The following are the main advantages of exception handling over traditional error handling:
+
+ 1) Separation of Error Handling Code from Normal Code: There are always if-else conditions to handle errors in traditional error handling codes. These conditions and the code to handle errors get mixed up with the normal flow. This makes the code less readable and maintainable. With try/catch blocks, the code for error handling becomes separate from the normal flow.
+
+2)It maintains the normal flow of the application. Rest of the code is executed even after exception.
+This allows the program to recover gracefully from the error rather than terminating abruptly.
+
+3)The Exception Handling mechanism offers a way of clean seperation between error generating block and error handling block,thats why detecting of errors becomes very easy
+
+4)In C++, both basic types and objects can be thrown as exceptions.
+
+====================================================================================
+C++ try , catch and throw
+
+C++ provides an inbuilt feature for Exception Handling. It can be done using the following specialized keywords: try, catch, and throw with each having a different purpose.
+
+Syntax of try-catch in C++
+try {         
+     // Code that might throw an exception
+     throw SomeExceptionType("Error message");
+ } 
+catch( ExceptionName e1 )  {   
+     // catch block catches the exception that is thrown from try block
+ } 
+
+1. try in C++
+==>The try keyword represents a block of code that may throw an exception placed inside the try block. It’s followed by one or more catch blocks. If an exception occurs, try block throws that exception.
+==>The try block contains the code that may throw an exception. If an exception is thrown within the try block, the control is transferred to the corresponding catch block.
+
+2. catch
+The catch block contains the code that will handle the exception. Each catch block is associated with a specific exception type, and the catch block that corresponds to the type of exception that was thrown will be executed. If the catch block does not have a matching exception type, the exception is passed to the next catch block.
+
+3. throw in C++
+An exception in C++ can be thrown using the throw keyword. When a program encounters a throw statement, then it immediately terminates the current function and starts finding a matching catch block to handle the thrown exception.
+The throw keyword is used to throw an exception. The expression that follows the throw keyword is used to create the exception object. The exception object is then passed to the nearest catch block that can handle it.
+
+Note: Multiple catch statements can be used to catch different type of exceptions thrown by try block.
+==========================================================================================
+C++ Exception Classes
+
+In C++ standard exceptions are defined in <exception> class that we can use inside our programs. The arrangement of parent-child class hierarchy.They are intended to provide a standard set of exception classes for use in C++ programs and are designed to represent a wide range of error conditions that may occur during the execution of a program. 
+
+ll the exception classes in C++ are derived from std::exception class. Let's see the list of C++ common exception classes.
+Exception and Description
+std::exception
+	It is an exception and parent class of all standard C++ exceptions.
+std::bad_exception
+	It is used to handle the unexpected exceptions in a c++ program.
+std::bad_cast
+	This exception is generally be thrown by dynamic_cast.
+std::bad_typeid
+	This exception is generally be thrown by typeid.
+std::bad_alloc
+	 When the new operator fails to allocate the requested space.
+std::invalid_argument
+ This is thrown due to invalid arguments.
+Exception
+	Description
+
+
+========================================================================
+ #include <iostream>  
+using namespace std;
+int main()
+{
+	int numerator, denominator, result;
+    cout << "Enter numerator: ";
+    cin >> numerator;
+    cout << "Enter denominator: ";
+    cin >> denominator;
+    try{
+	if(denominator==0)
+	throw 0;
+	else
+	{
+	
+    result=numerator/denominator;
+    cout<<"result"<<result<<endl;
+	}
+	cout<<"end";
+	}
+    catch(float e)
+    {
+    	cout<<"in 1st catch \n";
+	}
+	catch(int e)
+	{
+		cout<<"denominator should not be 0\n";
+	}
+	cout<<"end of the program good bye\n";
+}
+	
+	
+	
+	
+	
+	=====================================================
+#include <iostream>
+using namespace std;
+
+int main() {
+    
+   int numerator, denominator, arr[4] = {1,2,3,4};
+    int index;
+    
+    cout << "Enter array index: ";
+    cin >> index;
+    
+    try {
+        
+        // throw exception if array out of bounds
+        if (index >= 4)
+            throw "Error: Array out of bounds!";
+
+            
+        // not executed if array is out of bounds
+        cout << "Enter numerator: ";
+        cin >> numerator;
+    
+        cout << "Enter denominator: ";
+        cin >> denominator;
+
+        // throw exception if denominator is 0
+        if (denominator == 0)
+            throw 0;
+
+
+        // not executed if denominator is 0
+        arr[index] = numerator / denominator;
+        cout << arr[index] << endl;
+    }
+
+    // catch "Array out of bounds" exception
+    catch (const char* msg) {
+        cout << msg << endl;
+    }
+
+    // catch "Divide by 0" exception
+    catch (int num) {
+        cout << "Error: Cannot divide by " << num << endl;
+    }
+
+    // catch any other exception
+    catch (...) {
+        cout << "Unexpected exception!" << endl;
+    }
+
+    
+    return 0;    
+}
+=====================================================
+generalized catch block
+ #include <iostream>  
+using namespace std;
+int main()
+{
+	int numerator, denominator, result;
+    cout << "Enter numerator: ";
+    cin >> numerator;
+    cout << "Enter denominator: ";
+    cin >> denominator;
+    try{
+	if(denominator==0)
+	throw 0;
+	else
+	{
+	
+    result=numerator/denominator;
+    cout<<"result"<<result<<endl;
+	}
+	cout<<"end";
+	}
+    catch(float e)
+    {
+    	cout<<"in 1st catch \n";
+	}
+	catch(int* e)
+	{
+		cout<<"denominator should not be 0\n";
+	}
+	catch(...)
+	{
+		cout<<"something went wrong need to check\n";
+	}
+	cout<<"end of the program good bye\n";
+}
+	======================================================================================
+note:generalized catch block should be the last catch block
+ #include <iostream>  
+using namespace std;
+int main()
+{
+	int numerator, denominator, result;
+    cout << "Enter numerator: ";
+    cin >> numerator;
+    cout << "Enter denominator: ";
+    cin >> denominator;
+    try{
+	if(denominator==0)
+	throw 0;
+	else
+	{
+	
+    result=numerator/denominator;
+    cout<<"result"<<result<<endl;
+	}
+	cout<<"end";
+	}
+		catch(...)
+	{
+		cout<<"something went wrong need to check\n";
+	}
+    catch(float e)
+    {
+    	cout<<"in 1st catch \n";
+	}
+	catch(int* e)
+	{
+		cout<<"denominator should not be 0\n";
+	}
+
+	cout<<"end of the program good bye\n";
+}
+	
+	//error
+	=============================================================================
+	
+	
+
+=================================================================================
+In C++, exceptions are thrown using the “throw” keyword, followed by an expression that evaluates to the exception object.
+Here’s an example of throwing an exception when a function is called with an invalid argument:
+
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+
+int main()
+{
+
+    // try block
+    try {
+        int numerator = 10;
+        int denominator = 0;
+        int res;
+
+        // check if denominator is 0 then throw runtime
+        // error.
+        if (denominator == 0) {
+            throw invalid_argument(
+                "Division by zero not allowed!");
+        }
+    
+        // calculate result if no exception occurs
+        res = numerator / denominator;
+        //[printing result after division
+        cout << "Result after division: " << res << endl;
+    }
+    // catch block to catch the thrown exception
+    catch (const exception& e) {
+        // print the exception
+        cout << "Exception " << e.what() << endl;
+        //what() is the function of exception class
+    }
+
+    return 0;
+}====================================
+
+==============================================
+You can throw different types of exceptions as well like built-in types and custom types.
+
+#include <iostream>
+#include <stdexcept>
+using namespace std;
+
+int x = 5;
+
+int main() {
+try {
+   if (x == 0) 
+      throw x;
+   else if (x > 0)
+      throw 'x';
+   else 
+      throw "x is negative";
+}
+catch (int i) {
+   cout << "Caught an int exception: " << i << endl;
+}
+catch (char c) {
+   cout << "Caught a char exception: " << c << endl;
+}
+catch (char* str) {
+   cout << "Caught a string exception: " << str << endl;
+}
+}
+Output:
+Caught a char exception: x
+
+In this example, the code throws an exception based on the value of x: if x is zero, it throws an int exception, if x is positive it throws a char exception, otherwise it throws a string exception. The catch blocks catch the exception and print an appropriate message.
+===========================================
+program:C++ code for a simple program that prompts the user to enter their age and then checks if the age is a valid number between 0 and 100. If the age is not within this range, an exception is thrown, which is caught by the catch block, which prints an error message.
+
+
+#include <iostream>
+using namespace std;
+ 
+int main() {
+  try {
+    std::cout<<"Please enter the age"<<std::endl;
+    int age;
+    std::cin>>age;
+    if (age<0 || age>100)
+    {
+      throw (age);
+}
+ }
+ catch (int e) {
+cout << "Access denied - You must enter a valid age.\n";
+}
+  return 0;
+}
+===========================================
+Properties of Exception Handling in C++
+Property 1:
+There is a special catch block called the ‘catch-all’ block, written as catch(…), that can be used to catch all types of exceptions.
+
+In the following program, an int is thrown as an exception, but there is no catch block for int, so the catch(…) block will be executed. 
+
+#include <iostream>
+using namespace std;
+int main()
+{
+    // try block
+    try {
+
+        // throw
+        throw 10;
+    }
+
+    // catch block
+    catch (char* excp) {
+        cout << "Caught " << excp;
+    }
+
+    // catch all
+    catch (...) {
+        cout << "Default Exception\n";
+    }
+    return 0;
+}
+===============================================================================
+Property 2
+    Implicit type conversion doesn’t happen for primitive types.
+
+Example
+In the following program, ‘a’ is not implicitly converted to int. 
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    try {
+        throw 'a';
+    }
+    catch (int x) {
+        cout << "Caught " << x;
+    }
+    catch (...) {
+        cout << "Default Exception\n";
+    }
+    return 0;
+}
+=========================================
+Rethrowing an Exception
+
+Rethrowing an exception in C++ involves catching an exception within a try block and instead of dealing with it locally throwing it again to be caught by an outer catch block. By doing this. we preserve the type and details of the exception ensuring that it can be handled at the appropriate level within our program.
+
+This approach becomes particularly valuable when managing exceptions at multiple levels or when additional actions need to be performed before resolving the exception.
+In C++, try/catch blocks can be nested. Also, an exception can be re-thrown using “throw; “. 
+
+
+
+#include <iostream> 
+#include <stdexcept> 
+using namespace std; 
+  
+// Function to perform division 
+int divide(int numerator, int denominator) 
+{ 
+    try { 
+        if (denominator == 0) { 
+            // Throw a runtime_error if attempting to divide 
+            // by zero 
+            throw runtime_error("Division by zero!"); 
+        } 
+        // Perform the division and return the result 
+        return numerator / denominator; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in divide(): " << e.what() 
+             << endl; 
+        // Rethrow the caught exception to handle it at a 
+        // higher level 
+        throw; 
+    } 
+} 
+  
+// Function to calculate the sum of two numbers 
+int calculateSum(int a, int b) 
+{ 
+    try { 
+        if (a < 0 || b < 0) { 
+            // Throw an invalid_argument exception for 
+            // negative numbers 
+            throw invalid_argument( 
+                "Negative numbers not allowed!"); 
+        } 
+        // Calculate and return the sum 
+        return a + b; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in calculateSum(): "
+             << e.what() << endl; 
+        // Rethrow the caught exception to handle it at a 
+        // higher level 
+        throw; 
+    } 
+} 
+  
+int main() 
+{ 
+    try { 
+        // Calculate the sum of 10 and the result of 
+        // dividing 20 by 2 
+        //int result = calculateSum(10, divide(20, 2)); 
+        //cout << "Result: " << result << endl; 
+  
+        // Attempt to divide by zero, triggering an 
+        // exception 
+        int invalidResult = calculateSum(5, divide(10, 0)); 
+        cout << "Invalid Result: " << invalidResult << endl; 
+    } 
+    catch (const exception& e) { 
+        cout << "Caught exception in main: " << e.what() 
+             << endl; 
+        // Handle the exception at the highest level 
+    } 
+  
+    return 0; 
+}
+Explanation:
+
+    The program first calculates the sum of 10 and the result of dividing 20 by 2, which is 20. This result is printed and there are no exceptions raised in this part.
+    Next, the program attempts to divide by zero when calculating the sum of 5 and the result of dividing 10 by 0. This triggers a “Division by zero!” exception which is caught within the divide() function and rethrown. The rethrown exception is then caught in the main() function and is printed as “Division by zero!” along with the appropriate exception handling messages.
+
+=============================================
+
+
+// C++ program to demonstrate try/catch blocks can be nested
+// in C++
+
+#include <iostream>
+using namespace std;
+
+int main()
+{
+
+    // nesting of try/catch
+    try {
+        try {
+            throw 20;
+        }
+        catch (int n) {
+            cout << "Handle Partially ";
+            throw; // Re-throwing an exception
+        }
+    }
+    catch (int n) {
+        cout << "Handle remaining ";
+    }
+    return 0;
+}
+=========================================
+===============================================
+
+C++ User-Defined Exceptions
+==>In C++,we can create our own exception by inheriting the exception class located in the <exception> header.
+==>we have to ovveride the what() of the exception class.
+const char* what() const throw();
+what() print the error message
+throw() ==>exeception specification
+what() is not going to throw any kind of exception
+
+
+ #include <iostream>  
+    #include <exception>  
+    using namespace std;  
+    class MyException : public exception{  
+        public:  
+            const char * what() const throw()  
+            {  
+                return "Attempted to divide by zero!\n";  
+            }  
+    };  
+    int main()  
+    {  
+        try  
+        {  
+            int x, y;  
+            cout << "Enter the two numbers : \n";  
+            cin >> x >> y;  
+            if (y == 0)  
+            {  
+                MyException z;  
+                throw z;  
+            }  
+            else  
+            {  
+                cout << "x / y = " << x/y << endl;  
+            }  
+        }  
+        catch(exception& e)  
+        {  
+            cout << e.what();  
+        }  
+    }
+   
+=====================================================
+RTTI
+In C++, RTTI (Run-time type information) is a mechanism that exposes information about an object’s data type at runtime and is available only for the classes which have at least one virtual function. It allows the type of an object to be determined during program execution.
+
+1)typeid operator-->used for identifying the exact type of an object. 
+2)type_info class-->used to hold the type of information returned by typeid operator.
+
+typeid is an operator in C++. 
+    It is used where the dynamic type or runtime type information of an object is needed.
+    It is included in the <typeinfo> library. Hence inorder to use typeid, this library should be included in the program.
+
+Syntax:  
+
+typeid(type);
+OR
+typeid(expression);
+    This parameter is passed when the runtime type information of an expression is needed. In this, the expression is first evaluated. Then the type information of the final result is then provided.
+
+Return value: This operator provides the runtime type information of the specified parameter and hence that type information is returned, as a reference to an object of class type_info.
+
+1)When operand is a variable or an object.
+#include <iostream> 
+#include <typeinfo> 
+using namespace std; 
+  
+int main() 
+{ 
+    int i, j; 
+    char c; 
+  
+    // Get the type info using typeid operator 
+    const type_info& ti1 = typeid(i); 
+    const type_info& ti2 = typeid(j); 
+    const type_info& ti3 = typeid(c); 
+  
+    // Check if both types are same 
+    if (ti1 == ti2) 
+        cout << "i and j are of"
+             << " similar type" << endl; 
+    else
+        cout << "i and j are of"
+             << " different type" << endl; 
+  
+    // Check if both types are same 
+    if (ti2 == ti3) 
+        cout << "j and c are of"
+             << " similar type" << endl; 
+    else
+        cout << "j and c are of"
+             << " different type" << endl; 
+  
+    return 0; 
+} 
+==========================================
+
+#include <iostream> 
+#include <typeinfo> 
+using namespace std; 
+  
+int main() 
+{ 
+    int i = 5; 
+    float j = 1.0; 
+    char c = 'a'; 
+  
+    // Get the type info using typeid operator 
+    const type_info& ti1 = typeid(i * j); 
+    const type_info& ti2 = typeid(i * c); 
+    const type_info& ti3 = typeid(c); 
+  
+    // Print the types 
+    cout << "ti1 is of type "
+         << ti1.name() << endl; 
+  
+    cout << "ti2 is of type "
+         << ti2.name() << endl; 
+  
+    cout << "ti3 is of type "
+         << ti3.name() << endl; 
+  
+    return 0; 
+} 
+==============================================
+
+ #include <iostream>  
+#include <typeinfo> 
+    using namespace std;  
+    class Animal
+    {
+    	public:
+    		virtual void move()=0;
+    	
+	};
+	class eagle:public Animal
+	{
+		public:
+    		virtual void move()
+    		{
+    			cout<<"flying";
+			}
+    	
+		
+	};
+	class lion:public Animal
+	{
+		public:
+    		virtual void move()
+    		{
+    			cout<<"running";
+			}
+    	
+		
+	};
+	int main()
+	{
+	
+		Animal * p_e=new eagle();
+			Animal * p_l=new lion();
+const	type_info& TypeId=typeid(*p_e);
+		if(TypeId==typeid(eagle))
+		cout<<"eagle";
+	}	
+	
+=========================================================================
+Casting operators in c++
+1)static_cast
+2)dynamic_cast
+3)const_cast
+4)reinterpret_cast
+
+
+Runtime Casts
+
+The runtime cast, which checks that the cast is valid, is the simplest approach to ascertain the runtime type of an object using a pointer or reference. This is especially beneficial when we need to cast a pointer from a base class to a derived type. When dealing with the inheritance hierarchy of classes, the casting of an object is usually required. There are two types of casting: 
+
+    Upcasting: When a pointer or a reference of a derived class object is treated as a base class pointer.
+    Downcasting: When a base class pointer or reference is converted to a derived class pointer.
+
+Using ‘dynamic_cast‘: In an inheritance hierarchy, it is used for downcasting a base class pointer to a child class. On successful casting, it returns a pointer of the converted type and, however, it fails if we try to cast an invalid type such as an object pointer that is not of the type of the desired subclass.
+
+For example, dynamic_cast uses RTTI and the following program fails with the error “cannot dynamic_cast `b’ (of type `class B*’) to type `class D*’ (source type is not polymorphic) ” because there is no virtual function in the base class B.
+
+NOTE:
+Dynamic Cast: A cast is an operator that converts data from one type to another type. In C++, dynamic casting is mainly used for safe downcasting at run time. To work on dynamic_cast there must be one virtual function in the base class. A dynamic_cast works only polymorphic base class because it uses this information to decide safe downcasting.
+
+Syntax:
+    dynamic_cast <new_type>(Expression)
+
+    Downcasting: Casting a base class pointer (or reference) to a derived class pointer (or reference) is known as downcasting. In figure 1  casting from the Base class pointer/reference to the “derived class 1” pointer/reference showing downcasting (Base ->Derived class).
+
+// C++ program to demonstrate
+// Run Time Type Identification successfully
+// With virtual function
+ 
+#include <iostream>
+using namespace std;
+ 
+// Initialization of base class
+class B {
+    virtual void fun() {}
+};
+ 
+// Initialization of Derived class
+class D : public B {
+	public:
+	void show()
+	{
+		cout<<"in show()";
+	}
+};
+ 
+// Driver Code
+int main()
+{
+    B* b = new D; // Base class pointer
+    b->show()//error
+   // D* d=(D*)b;//traditional way of typecasting
+   //d->show();
+    //c++ want new type of conversion i.e dynamic_cast
+	
+    D* d = dynamic_cast<D*>(b); // Derived class pointer
+   d->show();
+    getchar();
+    return 0;
+}
+
+
+
+================================================
+static_cast
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   int i;
+   float f=3.142f;
+   i=f;
+   cout<<i;
+    getchar();
+    return 0;
+}
+//this program gives warning for loss of precision
+
+//suppress the warning for loss of precision by using static_cast
+
+
+
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   int i;
+   float f=3.142f;
+  i=static_cast<int>(f);
+   cout<<i;
+    getchar();
+    return 0;
+}
+
+
+
+================================================
+reinterpret cast:
+dangerous cast.dont use it because it can typecast any type into any other type
+
+
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   int i=100000;
+   int* p;
+  p=i;
+    getchar();
+    return 0;
+}
+//error
+
+
+
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   int i=100000;
+   int* p;
+  p=reinterpret_cast<int*>(i);
+  cout<<p;
+    getchar();
+    return 0;
+}
+==============================================================================
+const_cast->remove constness of the variable
+
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+ 	const int i=20;
+ 	int* p;
+ 	p = const_cast<int*>(&i);
+ //	cout<<*p;
+ //i++;//error
+ *p=10;//allowed
+    getchar();
+    return 0;
+}

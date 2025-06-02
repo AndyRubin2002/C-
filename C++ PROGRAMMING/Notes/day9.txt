@@ -1,0 +1,1080 @@
+OVERLOADING OF = OPERATOR
+
+==>one object can be assigned to another object provided the type of both the objects is same.
+when object assignment is done,assignment operator function is called.
+
+==>ex:
+cstring s1("info");
+cstring s2("tech");
+s1=s2;//s1.operator=(s2) //memberwise copy
+
+==>compiler provides a default implementation of the assignment operator for any class which performs memberwise copy of the data members. this mechanism of performing memberwise copy of the contents of the objects is called as shallow copying.
+==>while performing memberwise copy,the address in the pointer data member of one object is copied into the pointer data member of another object.This means both the objects point to same memory location.it could lead to following problems:
+1)Memory leakage:
+2)Dangling pointer:
+
+Therefore for classes with a pointer data member ex: class cstring,shallow copying technique cannot be used.
+==>inorder to handle such memory related problems,the assignment operator needs to be overloaded.this enables deep copying
+=========================================================================
+==>user defined overloaded assignment operator function for the class cstring should take care of memory leakage and dangling pointer problems.steps involved in overloading the assignment operator are as follows:
+1)The old buffer is deleted. ex:if object s2 is assigned to s1, first the buffer pointed by s1 is deleted.This prevents memory leakage problem.
+2)Enough new memory is allocated on heap for s1.The new memory is equal to the size of buffer pointed by s2.
+3)The string is copied to the newly alloacted memory .The string of s2 is copied to the newly allocated memory.
+step2 and step 3 prevent the problem of dangling pointer.
+
+==>call s1=s2 is resolved as s1.operator=(s2).
+s1 is an implicit parameter which is the string to be modified. s2 is passed by reference to avoid copy constructor call.
+
+==>
+ex:
+cstring s1("info");
+cstring s2("tech");
+s1=s2;//calls assignment operator
+cstring s3=s1;//calls copy constructor
+
+==>If a class contains atleast one data member as a pointer then to avoid memory  related problems in the applications it is necessary for the programmer to implement the following:
+1)userdefined copy constructor
+2)userdefined destructor
+3)userdefined assignment operator
+
+#include<iostream>
+using namespace std;
+class complex
+{
+	int real,img;
+
+public:
+	complex();
+	complex(int,int);
+	void display();
+	complex operator++();
+	complex operator++(int);
+	
+};
+complex::complex()
+{
+	real=img=0;
+}
+complex::complex(int real,int img)
+{
+	this->real=real;
+	this->img=img;
+}
+void complex::display()
+{
+	if(img>0)
+	cout<<"complex number is "<<real<<"+"<<img<<"i"<<endl;
+	else
+	cout<<"complex number is "<<real<<img<<"i"<<endl;
+}
+complex complex::operator++()
+{
+	this->real=this->real+1;
+	this->img=this->img+1;
+	return (*this);
+	
+}
+complex complex::operator++(int)
+{
+	complex temp=*this;	
+	this->real=this->real+1;
+	this->img++;
+	return temp;
+}
+int main()
+{
+	int a=10;
+	int b=++a;
+	complex c1(1,2);
+	complex c2=++c1;//c2=c1.operator++()
+	c1.display();
+	c2.display();
+	//int a=10;
+	//int b=a++;
+	complex c3(1,2);
+	complex c4=c3++;//c3.operator++(0)
+	c3.display();
+	c4.display();
+}
+	
+================================
+Assignment: overloading of pre and post decrement operator
+-==================================================================
+OVERLOADING OF = OPERATOR
+
+==>one object can be assigned to another object provided the type of both the objects is same.
+when object assignment is done,assignment operator function is called.
+
+==>ex:
+cstring s1("info");
+cstring s2("tech");
+s1=s2;//s1.operator=(s2) //memberwise copy
+
+==>compiler provides a default implementation of the assignment operator for any class which performs memberwise copy of the data members. this mechanism of performing memberwise copy of the contents of the objects is called as shallow copying.
+==>while performing memberwise copy,the address in the pointer data member of one object is copied into the pointer data member of another object.This means both the objects point to same memory location.it could lead to following problems:
+1)Memory leakage:
+2)Dangling pointer:
+
+Therefore for classes with a pointer data member ex: class cstring,shallow copying technique cannot be used.
+==>inorder to handle such memory related problems,the assignment operator needs to be overloaded.this enables deep copying
+=========================================================================
+==>user defined overloaded assignment operator function for the class cstring should take care of memory leakage and dangling pointer problems.steps involved in overloading the assignment operator are as follows:
+1)The old buffer is deleted. ex:if object s2 is assigned to s1, first the buffer pointed by s1 is deleted.This prevents memory leakage problem.
+2)Enough new memory is allocated on heap for s1.The new memory is equal to the size of buffer pointed by s2.
+3)The string is copied to the newly alloacted memory .The string of s2 is copied to the newly allocated memory.
+step2 and step 3 prevent the problem of dangling pointer.
+
+==>call s1=s2 is resolved as s1.operator=(s2).
+s1 is an implicit parameter which is the string to be modified. s2 is passed by reference to avoid copy constructor call.
+
+==>
+ex:
+cstring s1("info");
+cstring s2("tech");
+s1=s2;//calls assignment operator
+cstring s3=s1;//calls copy constructor
+
+==>If a class contains atleast one data member as a pointer then to avoid memory  related problems in the applications it is necessary for the programmer to implement the following:
+1)userdefined copy constructor
+2)userdefined destructor
+3)userdefined assignment operator
+
+
+CASE 1: WHEN COMPILER DEFINES ITS OWN COPY FOR ASSIGNMENT OPERATOR () WHICH WILL ARISE THE PROBLEM OF MEMORY LEAKAGE AS WELL AS DANGLING POINTER SITUATION
+#include<iostream>
+using namespace std;
+#include<string.h>
+class string1
+{
+	int len;
+	char* ptr;
+	public:
+		void display();
+		string1(char*);
+				~string1()
+		{
+			cout<<"destructor is called\n";
+			if(ptr)
+			{
+			
+			delete[] ptr;
+			ptr=NULL;
+		}
+		}
+};
+
+	void string1::display()
+{
+	cout<<"length is "<<len<<endl;
+	cout<<"string is "<<ptr<<endl;
+}
+string1::string1(char * sptr)
+{
+	len=strlen(sptr);
+	ptr=new char[len+1];
+	strcpy(ptr,sptr);
+}	
+
+int main()
+{
+	string1 s1("abc");
+	{
+	
+	string1 s2("axyz");
+	s2=s1;//s2.operator=(s1)
+}
+	s1.display();
+	
+
+}
+	
+===========================================================
+CASE 2:TO RECTIFY ML+DL SITUATION BY GIVING USERDEFINED ASSIGNMENT OPERATOR ()
+	
+	#include<iostream>
+using namespace std;
+#include<string.h>
+class string1
+{
+	int len;
+	char* ptr;
+	public:
+		void display();
+		string1(char*);
+		void operator=(string1&);
+		
+		~string1()
+		{
+			cout<<"destructor is called\n";
+			if(ptr)
+			{
+			
+			delete[] ptr;
+			ptr=NULL;
+		}
+		}
+};
+void  string1::operator=(string1& s)
+{
+	cout<<"assignment operator function called\n";
+	delete[] this->ptr;
+	this->len=s.len;
+	this->ptr=new char[this->len+1];
+	strcpy(this->ptr,s.ptr);
+	
+}
+	void string1::display()
+{
+	cout<<"length is "<<len<<endl;
+	cout<<"string is "<<ptr<<endl;
+}
+string1::string1(char * sptr)
+{
+	len=strlen(sptr);
+	ptr=new char[len+1];
+	strcpy(ptr,sptr);
+}	
+
+int main()
+{
+	string1 s1("abc");
+	{
+	
+	string1 s2("axyz");
+	s2=s1;//s2.operator=(s1)
+	}
+	s1.display();
+	
+
+}
+==============================================================
+
+Multiple Inheritance in C++:
+
+Multiple Inheritance is a feature of C++ where a class can inherit from more than one classes.  The constructors of inherited classes are called in the same order in which they are inherited.
+==>The list of base classes memtioned in the derived class declaration must be seperated by commas and each of the base classes should use its own specifier . If the class specifier is not specified,default is private.
+==>The order in which base class constructors are invoked is the same as the  order in which they appear in the derived class constructor's member initialization list.
+Syntax:
+
+class A
+{ 
+... .. ... 
+};
+class B
+{
+... .. ...
+};
+class C: public A,public B
+{
+... ... ...
+};
+
+#include<iostream>
+using namespace std;
+ 
+class A
+{
+public:
+  A()  { cout << "A's constructor called" << endl; }
+};
+ 
+class B
+{
+public:
+  B()  { cout << "B's constructor called" << endl; }
+};
+ 
+class C: public B, public A  // Note the order
+{
+public:
+  C()  { cout << "C's constructor called" << endl; }
+};
+ 
+int main()
+{
+    C c;
+    return 0;
+}
+Output:
+
+B's constructor called
+A's constructor called
+C's constructor called
+The destructors are called in reverse order of constructors.
+==================================================================
+#include<iostream>
+using namespace std;
+ 
+class A
+{
+	int a;
+public:
+  A()  { cout << "A's constructor called" << endl; }
+  A(int p) 
+{
+    cout << "A's para constructor called" << endl;
+}
+};
+ 
+class B
+{
+	int b;
+public:
+  B()  { cout << "B's constructor called" << endl; }
+  B(int q)
+  { 
+  		cout << "B's para constructor called" << endl;
+  }
+};
+ 
+class C: public B, public A  // Note the order
+{
+public:
+  C(int p,int q):A(p),B()
+    { 
+	cout << "C's paraconstructor called" << endl; 
+	}
+};
+ 
+int main()
+{
+    C c(10,20);
+    return 0;
+}
+
+
+
+
+====================================================
+
+Ambiguity Problem in Multiple Inheritance
+In Multiple Inheritance, when a single class is derived from two or more base or parent classes. So, it might be possible that both the parent class have the same-named member functions, and it shows ambiguity when the child class object invokes one of the same-named member functions. Hence, we can say, the C++ compiler is confused in selecting the member function of a class for the execution of a program.
+ex:
+Base classes can contain a function with the same name,signature and returntype.
+class A
+{ 
+... .. ... 
+};
+class C
+{
+... .. ...
+};
+class B: public A,public B
+{
+... ... ...
+};
+B bobj
+bobj.func();
+
+==>Here,the function call is ambiguous and doesnot compile,because it is not clear whether it refers to A::func() or C::func().This ambiguity can be resolved by any one of the following 2 ways.
+1)Making the call explicit by resolving the function call with the classname i.e specifying either  bobj.A::func() or bobj.c::func()
+2)overriding the func() in class B . then the statement bobj.func() will call func() of class B and the call will not be ambiguous.
+
+#include <iostream>  
+#include <conio.h>  
+  
+using namespace std;  
+  
+// create class A  
+class A  
+{  
+    public:   
+    void show()  
+    {  
+        cout << " It is the member function of class A " << endl;  
+    }  
+ };   
+   
+ // create class B  
+ class B  
+{  
+    public:   
+    void show()  
+    {  
+        cout << " It is the member function of class B " << endl;  
+    }  
+ };  
+   
+   
+ // create a child class to inherit the member function of class A and class B  
+ class child: public A, public B  
+ {  
+    public:  
+        void disp()  
+        {  
+            cout << " It is the member function of the child class " << endl;  
+         }  
+ };  
+   
+ int main ()  
+ {  
+    // create an object of the child class to access the member function  
+    child ch;  
+    ch.show(); // It causes ambiguity   
+ch.disp();  
+    return 0;  
+ }  
+==========================================================================
+Diamond Inheritance:
+In diamond inheritance,one child has two parents and both the parents share a common parent. When in a hierarchy, a class is derived from two classes and both the classes are derived from a common base class,it is termed as diamond inheritance.
+
+Diamond Problem No 1:
+
+The Diamond Problem is an ambiguity error that arises in multiple inheritance when a derived class inherits from two or more base classes that share a common parent. This results in the inheritance hierarchy forming a diamond shape, hence the name "Diamond Problem." The ambiguity arises because the derived class has multiple paths to access members or methods inherited from the common parent, leading to confusion during method resolution and member access.
+diamond-problem-in-cpp
+
+// C++ Program to illustrate the diamond problem
+#include <iostream>
+using namespace std;
+
+// Base class
+class Base {
+public:
+    void fun() { cout << "Base" << endl; }
+};
+
+// Parent class 1
+class Parent1 : public Base {
+public:
+};
+
+// Parent class 2
+class Parent2 : public Base {
+public:
+};
+
+// Child class inheriting from both Parent1 and Parent2
+class Child : public Parent1, public Parent2 {
+};
+
+int main()
+{
+    Child* obj = new Child();
+    obj->fun(); // Abiguity arises, as Child now has two copies of fun()
+    return 0;
+}
+================================================================
+Diamond Problem No 2:
+
+ The diamond problem occurs when two superclasses of a class have a common base class. For example, in the following diagram, the TA class gets two copies of all attributes of Person class, this causes ambiguities.
+
+#include<iostream>
+using namespace std;
+class Person {
+public:
+    Person(int x)  { cout << "Person::Person(int ) called" << endl;   }
+};
+ 
+class Faculty : public Person {
+ public:
+    Faculty(int x):Person(x)   {
+       cout<<"Faculty::Faculty(int ) called"<< endl;
+    }
+};
+ 
+class Student : public Person {
+public:
+    Student(int x):Person(x) {
+        cout<<"Student::Student(int ) called"<< endl;
+    }
+};
+ 
+class TA : public Faculty, public Student  {
+public:
+	    TA(int x):Student(x), Faculty(x)   {
+        cout<<"TA::TA(int ) called"<< endl;
+    }
+};
+ 
+int main()  {
+    TA ta1(30);
+}
+Person::Person(int ) called
+Faculty::Faculty(int ) called
+Person::Person(int ) called
+Student::Student(int ) called
+TA::TA(int ) called
+In the above program, constructor of ‘Person’ is called two times. Destructor of ‘Person’ will also be called two times when object ‘ta1’ is destructed. So object ‘ta1’ has two copies of all members of ‘Person’, this causes ambiguities. ========================================================================================
+#include<iostream>
+using namespace std;
+ class A
+{
+public:
+	int a;
+  A()  { cout << "A's default constructor called" << endl; }
+ 
+};
+ 
+class B: public A
+{
+
+public:
+	int b;
+  B()  { cout << "B's constructor called" << endl; }
+  
+};
+ 
+class C:public A  
+{
+public:
+	int c;
+  C()
+    { 
+	cout << "C's default constructor called" << endl; 
+	}
+	
+};
+ class D:public C,public B  
+{
+public:
+	int d;
+	D()
+	{
+		cout << "D's default constructor called" << endl; 
+	}
+  
+};
+int main()
+{
+  A aobj;
+  B bobj;
+  C cobj;
+  D dobj;
+  cout<<sizeof(dobj);
+}
+
+===============================================================================
+=
+#include<iostream>
+using namespace std;
+class Person {
+public:
+    Person(int x)  { cout << "Person::Person(int ) called" << endl;   }
+    Person()     { cout << "Person::Person() called" << endl;   }
+};
+ 
+class Faculty : virtual public Person {
+public:
+    Faculty(int x):Person(x)   {
+       cout<<"Faculty::Faculty(int ) called"<< endl;
+    }
+};
+ 
+class Student : virtual public Person {
+public:
+    Student(int x):Person(x) {
+        cout<<"Student::Student(int ) called"<< endl;
+    }
+};
+ 
+class TA : public Faculty, public Student  {
+public:
+    TA(int x):Student(x), Faculty(x)   {
+        cout<<"TA::TA(int ) called"<< endl;
+    }
+};
+ 
+int main()  {
+    TA ta1(30);
+}
+Output:
+
+Person::Person() called
+Faculty::Faculty(int ) called
+Student::Student(int ) called
+TA::TA(int ) called
+In the above program, constructor of ‘Person’ is called once. One important thing to note in the above output is, the default constructor of ‘Person’ is called.When we use ‘virtual’ keyword, the default constructor of grandparent class is called by default even if the parent classes explicitly call parameterized constructor.
+=======================================================================================
+How to call the parameterized constructor of the ‘Person’ class?
+
+The constructor has to be called in ‘TA’ class.
+
+For example, see the following program. 
+
+   
+#include<iostream>
+using namespace std;
+class Person {
+public:
+    Person(int x)  { cout << "Person::Person(int ) called" << endl;   }
+    Person()     { cout << "Person::Person() called" << endl;   }
+};
+ 
+class Faculty : virtual public Person {
+public:
+    Faculty(int x):Person(x)   {
+       cout<<"Faculty::Faculty(int ) called"<< endl;
+    }
+};
+ 
+class Student : virtual public Person {
+public:
+    Student(int x):Person(x) {
+        cout<<"Student::Student(int ) called"<< endl;
+    }
+};
+ 
+class TA : public Faculty, public Student  {
+public:
+    TA(int x):Student(x), Faculty(x), Person(x)   {
+        cout<<"TA::TA(int ) called"<< endl;
+    }
+};
+ 
+int main()  {
+    TA ta1(30);
+}
+Output:
+
+Person::Person(int ) called
+Faculty::Faculty(int ) called
+Student::Student(int ) called
+TA::TA(int ) called
+In general, it is not allowed to call the grandparent’s constructor directly, it has to be called through parent class. It is allowed only when ‘virtual’ keyword is used.
+=====================================================================================
+
+====================================================================
+
+
+Virtual base class in C++
+
+problem 1:
+If the base class contain a function with same name then while calling this function in the derived class or through an object of derived class, the compiler flashes an error of ambiguous call.
+
+problem 2:
+data duplication occurs when the derived class has multiple copies of the same base class.
+
+==>To avoid 2 major problems in case of diamond inheritance,c++ introduces a concept of a virtual base class. A virtual base class is a class that is virtually present in its derived classes(i.e in the form of virtual base class pointer). 
+==>A base class is made virtual by placing the keyword virtual before its name in the derived class declaration.(imp)
+==Virtual base classes offer a way to save spacce and avoid ambiguities in class hierarchies that use diamond inheritance.
+==>When a base class is specified as virtual,prevents duplicating its data members.A single copy of its data members is shared by all the base classes that use it as virtual base.
+==>if a virtual base class is not used ,all the derived classes will get duplicated data members.
+==>If a class inherits one or more classes with virtual parents, the most derived class is responsible for constructing the virtual base class. Here Class d is responsible for creating class A object.
+
+Employee:  id
+Manager:petrolallow,foodallow,virtual base pointer
+Salesperson:sales,comm,virtual base pointer
+Salesmanager:petrolallow,foodallow,virtual base pointer + sales,comm,virtual base pointer+id
+
+class Salesperson:virtual public Employee
+{}
+
+class Manager:virtual public Employee
+{}
+
+=====================================================================
+
+diamond inheritance
+case 1: with virtual base class, from derived class constructor,control will pass to super base class constructor either to default or 
+parametrized constructor depending on the base class initialization list mentioned in the derived class
+
+#include <iostream>
+using namespace std;
+class A
+{
+	int x;
+	public:
+		A()
+		{
+			cout<<"default const of A\n";
+		}
+		A(int x)
+		{
+			cout<<"para const of A\n";
+			this->x=x;
+		}
+};
+class B:virtual public  A
+{
+	int y;
+	public:
+		B()
+		{
+			cout<<"default const of B\n";
+		}
+		B(int x,int y):A(x)
+		{
+			cout<<"para const of A\n";
+			this->y=y;
+		}
+};
+class C:virtual public  A
+{
+	int z;
+	public:
+		C()
+		{
+			cout<<"default const of C\n";
+		}
+		C(int x,int z):A(x)
+		{
+			cout<<"para const of C\n";
+			this->z=z;
+		}
+};
+class D:public B,public  C
+{
+	
+	public:
+		D()
+		{
+			cout<<"default const of D\n";
+		}
+		D(int x,int y,int z):B(x,y),C(x,z),A(x)
+		{
+			cout<<"para const of D\n";
+			
+		}
+};
+int main()
+{
+    D obj(10,20,30);
+}
+
+========================================================================
+Namespace:
+
+==>Namespace provide the space where we can define or declare identifier i.e. variable,  method, classes. Namespace are necessary if you want more than one function with the same name. You can declare two different namespaces for these functions and call them by referencing their corresponding namespace. 
+
+==>A namespace is designed to overcome this difficulty and is used as additional information to differentiate similar functions, classes, variables etc. with the same name available in different libraries. 
+
+==> namespace helps in avoiding the ambiguity that may occur when two identifiers have the same name.
+
+For example, suppose you have two functions named calculate(), and both are performing different tasks. One calculate() function is doing the multiplication, and another is doing the addition. So in this case, to avoid ambiguity, you will declare both the functions in two different namespaces. These namespaces will differentiate both the functions and also provide information regarding both the functions.
+
+==>The best example of namespace scope is the C++ standard library (std) where all the classes, methods and templates are declared. Hence while writing a C++ program we usually include the directive 
+using namespace std;
+==============================================
+Defining a Namespace:
+A namespace definition begins with the keyword namespace followed by the namespace name as follows:
+namespace  namespace_name 
+{
+    // code declarations i.e. variable  (int a;)
+    method (void add();)
+    classes ( class student{};)
+}
+==>It is to be noted that, there is no semicolon (;) after the closing brace.
+==>Namespace only define them in a global scope.
+==>It is only present in C++ and not in C.
+==>Namespace declarations don’t have access specifiers (Public or Private).
+
+=================================================================
+
+C++ Namespace Example
+namespace Data
+{
+	class Manager
+	{
+	public:
+	void task() {}
+	};
+}
+
+
+You can access the class inside the above namespace in two ways:
+1)by using :: operator
+Data::Manager mgr;// mgr is an object
+
+
+Example:
+#include <iostream>
+using namespace std;
+// first name space
+namespace first_space
+{
+  void func()
+  {
+     cout << "Inside first_space" << endl;
+  }
+}
+// second name space
+namespace second_space
+{
+  void func()
+  {
+     cout << "Inside second_space" << endl;
+  }
+}
+ 
+int main ()
+{
+       // Calls function from first name space.
+      first_space :: func();
+    // Calls function from second name space.
+      second_space :: func(); 
+      return 0;
+}
+
+Output
+Inside first_space
+Inside second_space
+
+=======================================================================
+2)By using  "using" directive 
+==>You use the "using" directive to import the entire namespace into a program or another namespace. This directive eliminates the need to use the "namespace-name" every time. So it is better to use the "using" if you need several functions or classes from the namespace. Otherwise, if you only need to use it once or twice, "namespace-name::" would be a better choice.
+==>The using directive is positioned at the top of the program and it allows us to access all the namespace members.
+
+
+Example:
+#include <iostream>
+using namespace std;
+// first name space
+namespace first_space
+{
+	int a=10;
+  void func()
+  {
+     cout << "Inside first_space" << endl;
+  }
+}
+ 
+// second name space
+namespace second_space
+{
+int a=100;
+  void func()
+  {
+     cout << "Inside second_space" << endl;
+  }
+}
+using namespace first_space;
+int main ()
+{
+   // This calls function from first name space.
+  func();
+cout<<a;
+  return 0;
+}
+
+Output
+Inside first_space
+10
+==========================================================
+// without using std namespace
+std::cout
+std::cin
+std::endl
+std::exception
+std::bad_cast
+
+By including the using namespace std; code in our program, we can omit the std:: part for the identifiers defined in the std namespace:
+
+// using std namespace
+cout
+cin
+endl
+exception
+bad_cast
+
+
+
+===========================================================
+
+Nested Namespaces:
+Namespaces can be nested where you can define one namespace inside another name space as follows:
+SYNTAX:
+    namespace namespace_name1 
+    {
+          // code declarations
+          namespace namespace_name2 
+          {
+             // code declarations
+          }
+    }
+
+You can access members of nested namespace by using resolution operators as follows:
+==> to access members of namespace_name2
+using namespace namespace_name1::namespace_name2;
+==> to access members of namespace_name1
+using namespace namespace_name1;
+ 
+Example:
+#include <iostream>
+using namespace std;
+ // first name space
+namespace first_space
+{
+  void func()
+  {
+     cout << "Inside first_space" << endl;
+  }
+  // second name space
+  namespace second_space
+  {
+     void func()
+     {
+        cout << "Inside second_space" << endl;
+     }
+  }
+}
+using namespace first_space::second_space;
+int main ()
+{
+    // This calls function from second name space.
+      func();
+   
+      return 0;
+}
+
+Output
+Inside second_space
+=========================================================
+FAQ:
+
+#include<iostream>
+using namespace std;
+ namespace ns
+{
+    class geek
+    {
+    public:
+        void display()
+        {
+            cout<<"display()"<<endl;;
+        }
+    };
+}
+ 
+int main()
+{
+    // Creating Object of geek Class
+    ns::geek obj;
+ 
+    obj.display();
+ 
+    return 0;
+}
+
+Output
+ns::geek::display()
+================================================================
+==========================================================
+Standard Namespace
+The std is a short form of standard, the std namespace contains the built-in classes and declared functions.You can find all the standard types and functions in the C++ "std" namespace.
+
+#include<iostream>
+int main()
+{
+	std::cout<<"enter no to add";
+	int num1,num2;
+	std::cin>>num1;
+	std::cin>>num2;
+	std::cout<<"addition is"<<num1+num2;
+}
+Here std is used in front of cin and cout along with scope resolution operator, which indicates that the object cin and cout are defined inside the namespace whose name is std.The std is the standard library, and both cin and cout are defined inside this scope.
+
+====================================================================
+Advantage
+The primary advantage of namespaces is that they resolve any naming conflict. For example, sometimes, you may need more than one function with the same name. And namespaces provide a way to declare such functions without making the compiler ambiguous. 
+====================================================================
+
+======================================================================================
+Array of Integer pointers
+#include <iostream>  
+using namespace std;  
+int main()  
+{ 
+    int ptr1[5]; // integer array declaration  
+    int *ptr2[5]; // integer array of pointer declaration  
+    cout << "Enter five numbers :" <<endl;  
+    for(int i=0;i<5;i++)  
+    {  
+        cin >> ptr1[i];  
+    }  
+    for(int i=0;i<5;i++)  
+    {  
+        ptr2[i]=&ptr1[i];   
+    }    
+  cout << "The values are" << endl; 
+    for(int i=0;i<5;i++)  
+    {  
+        cout << *ptr2[i] << endl;  
+    }
+		cout<<sizeof(ptr2);
+    }  
+========================================================================
+Array of Pointer to Strings
+
+==>An array of pointers to strings is a data structure that holds multiple pointers, each pointing to a string. It allows you to store and manipulate a collection of strings in memory.
+==>An array of pointer to strings is an array of character pointers that holds the address of the first character of a string or we can say the base address of a string.
+
+The following are the differences between an array of pointers to string and two-dimensional array of characters:
+==>An array of pointers to string is more efficient than the two-dimensional array of characters in case of memory consumption because an array of pointer to strings consumes less memory than the two-dimensional array of characters to store the strings.
+==>In an array of pointers, the manipulation of strings is comparatively easier than in the case of 2d array. We can also easily change the position of the strings by using the pointers.
+
+#include <iostream>  
+using namespace std;  
+int main()  
+{  
+  char *names[5] = {"rohan","ram","rahul","rohit","rachana"};  
+for(int i=0;i<=5;i++)  
+    { 
+		int j=0; 
+        cout << names[i] << endl; 
+	 cout << (names+i) //names//&names[0] << endl; 
+	  cout << *(names+i) << endl;
+		   for(; j<=5; j++)
+		   cout << *(*(names+i)+j);
+		   cout<<endl;
+    }  
+    cout<<sizeof(names); 
+}  
+
+==========================================================
+#include <iostream>  
+using namespace std;  
+int main()  
+{  
+  char names[5][8] = {"rohan","geeta","rahul","rohit","rachana"};  
+	for(int i=0;i<=5;i++)  
+	{
+
+	    cout << names[i] << endl; 
+		cout<<*(names+i)<<endl;
+	}
+       cout<<"---------------------------------------";
+    for(int i=0;i<=5;i++)  
+    { 
+        for(int j=0;j<=5;j++)
+        {
+            cout<< names[i][j];
+        }
+        cout<<endl;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

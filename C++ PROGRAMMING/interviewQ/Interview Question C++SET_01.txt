@@ -1,0 +1,27 @@
+INTERVIEW_QUESTIONS_ON_C++
+•  What is the difference between a C++ class and a struct, and why is the default access specifier different in them?
+•  What is data hiding and encapsulation in object-oriented programming? How does C++ achieve these concepts?
+•  What is the difference between a const pointer and a pointer to const in C++? Can you give examples?
+•  What is the purpose of the scope resolution operator :: in C++, and how is it used when defining member functions outside the class?
+•  What is the difference between "deep copy" and "shallow copy" in C++? How would you implement a deep copy constructor for a class that contains dynamic memory allocation?
+•  What will happen if you try to access an array element beyond its bounds in C++? Why does this occur, and how can you avoid it?
+•  Can you explain the difference between static variables in functions and static data members in classes?
+•  What is the difference between const and constexpr in C++? How are they used and what are their differences in terms of compile-time evaluation?
+•  Explain how default arguments work in C++. What are the limitations or rules regarding default arguments?
+•  What is the difference between passing an array to a function by reference and passing it by pointer in C++?
+•  What is the difference between static and non-static functions in C++? How are they invoked?
+•  Explain the concept of dynamic memory allocation in C++ and how it works with pointers. How do you avoid memory leaks?
+•  What are the advantages of using default arguments in C++ functions? Can you give an example where default arguments might be problematic?
+•  How does a two-dimensional array work in C++? Explain both subscript and pointer notations with examples.
+•  What is the difference between deep copy and shallow copy in C++? When would you use each?
+•  What is the difference between a const object and a const member function in C++?
+•  Why can't a non-constant member function be called by a const object?
+•  Can constructors or destructors be declared as const in C++?
+•  What will happen if you try to modify a data member in a const member function?
+•  What is the role of the this pointer in C++? Can it be const?
+•  Can we have an array of const objects? If yes, what would be the implications?
+•  What is the difference between passing an object by reference and passing it by value in C++? Which is more efficient?
+•  Can a const member function be overloaded? Give an example.
+•  Can you assign a new value to a const object’s data member after its initialization?
+•  What happens when you try to invoke a non-constant member function on a const object?
+•  Why we can’t access static data function through non-static data member?
